@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackDownload", "SlackDownload\SlackDownload.csproj", "{8D633EE3-CB9A-48D3-856A-F751909D3DCC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D633EE3-CB9A-48D3-856A-F751909D3DCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D633EE3-CB9A-48D3-856A-F751909D3DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D633EE3-CB9A-48D3-856A-F751909D3DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D633EE3-CB9A-48D3-856A-F751909D3DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6344914A-5B8B-48C3-B827-4E612FF1BCE8}
+	EndGlobalSection
+EndGlobal
