@@ -1,37 +1,58 @@
 ﻿using System;
-public class CreateFileOrFolder
+using System.IO;
+
+namespace SlackDownload
 {
-    static void Main()
+    class Program
     {
-        string folderName = @"C:\SlackArchives";
 
+        string SourceFolder = @"C:\Windows\Temp";
 
-        Console.WriteLine("WARNING! This Application Will Create A NEW Directory: " + folderName);
-        Console.WriteLine("\nIf you are sure of creating this directory , please click any key to continue!\n");
-        Console.WriteLine("If you are not, close the application!");
-        Console.ReadKey();
-        Console.ReadKey();
+        static void Main(string[] args)
+        {
+            if (args.Length == 0 || args == null)
+            {
+                ShowError();
+            }
+            
+            string help = Console.ReadLine().ToLower();
+            if (help == "help")
+            {
+                ShowFullHelp();
+            }
+            Console.ReadKey();
+        }
 
-        string pathString1 = System.IO.Path.Combine(folderName, "exe files");
-        string pathString2 = System.IO.Path.Combine(folderName, "pdf files");
-        string pathString3 = System.IO.Path.Combine(folderName, "java files");
-        string pathString4 = System.IO.Path.Combine(folderName, "txt files");
-        string pathString5 = System.IO.Path.Combine(folderName, "iso files");
-        string pathString6 = System.IO.Path.Combine(folderName, "image files");
+        public static void ShowError()
+        {
+            Console.WriteLine("Error 404, Parameters Not Found");
+            Console.WriteLine("Type 'help' for more information");
+        }
 
-        System.IO.Directory.CreateDirectory(pathString1);
-        System.IO.Directory.CreateDirectory(pathString2);
-        System.IO.Directory.CreateDirectory(pathString3);
-        System.IO.Directory.CreateDirectory(pathString4);
-        System.IO.Directory.CreateDirectory(pathString5);
-        System.IO.Directory.CreateDirectory(pathString6);
+        public static void ShowFullHelp()
+        {
+            Console.WriteLine("\nParameters Accepted:\n\nFor user token, use xoxp-\n\nFor bot user token, use xoxb-\n\nFor workspace token, use xoxa- ");
+        }
+        
+        public static void SlackAutenticate()
+        {
 
-        Console.WriteLine("The directory has been succesfully created!");
-        Console.WriteLine("Path for directory: " + folderName);
+        }
 
+        public static void ChooseChannel()
+        {
 
-        System.Console.WriteLine("Press any key to exit.");
-        System.Console.ReadKey();
+        }
+
+        public static void DownloadArchives()
+        {
+            
+        }
+
+        public static void CopyingArchives()
+        {
+            
+        }
+        
     }
-
 }
