@@ -2,6 +2,7 @@
 using System.IO;
 
 namespace SlackDownload
+
 {
     class Program
     {
