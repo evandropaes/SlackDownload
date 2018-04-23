@@ -1,5 +1,5 @@
 ﻿using System;
-public class CreateFileOrFolder
+public class SlackDownload
 {
     static void Main()
     {
