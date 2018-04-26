@@ -1,4 +1,6 @@
-﻿using System;
+// Run this at Project root: 'dotnet add package Mono.Options --version 5.3.0.1'
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -6,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
+using Mono.Options;
 
 namespace SlackDownload
 
@@ -14,16 +17,56 @@ namespace SlackDownload
 
         private static string SourceFolder = @"C:\Windows\Temp";
 
-        public static void Main(string[] args) {
-            // First check if any parameter is given, if none, show summary help
-            if (args.Length == 0 || args == null) {
-                ShowInfo();
+        public static int Main(string[] args) {
+            // Set some variables to default values
+            bool show_help = false;
+            string instance_name = "";
+            string user_name = "";
+            string password = "";
+            string channel_name = "";
+            List<string> file_types = new List<string>();
+
+            var p = new OptionSet() {
+                { "h|help", "Show this message and exit.", v => show_help = (v != null) },
+                { "r|remote", "Inform the Slack instance name to connect.", v => instance_name = v },
+                { "u|user", "Inform the Slack user to authenticate.", v => user_name = v },
+                { "p|password", "Inform the Slack user password to authenticate.", v => password = v},
+                { "c|channel", "Inform the Slack channel to connect to.", v => channel_name = v },
+                { "t|filetype", "Inform the extensions to download.", v => file_types.Add(v) }
+            };
+            List<string> parsedValues;
+            try {
+                parsedValues = p.Parse(args);
             }
-            else {
-                // If parameters were given, test them and collect its information
-                // ... Perform the test of for -h and then call the method ShowHelp()
-                // ... Other parameters could be added / tested later... ;-)
+            catch (OptionException failure) {
+                Console.Write("SlackDownload: ");
+                Console.WriteLine(failure.Message);
+                Console.WriteLine("Try 'SlackDownload --help' for more information.");
+                return 1;
             }
+
+            // Check for required parameters
+            if (! show_help && (instance_name.Length == 0 || user_name.Length == 0 ||
+                                password.Length == 0 || channel_name.Length == 0)) {
+                Console.Write("SlackDownload: ");
+                Console.WriteLine("Missing required parameters!");
+                Console.WriteLine("Try 'SlackDownload --help' for more information.");
+                return 1;
+            }
+
+            // If help requested, show it an exit
+            if (show_help) {
+                ShowHelp(p);
+                return 0;
+            }
+
+
+            // If parameters were given, test them and collect its information
+            // ... Perform the test of for -h and then call the method ShowHelp()
+            // ... Other parameters could be added / tested later... ;-)
+
+            // As the default
+
             // Execute the authentication (SlackAuthenticate)
             // Indicate the slack channel to access (ChooseChannel)
             // Collect the files to download (GetChannelFiles)
@@ -33,17 +76,16 @@ namespace SlackDownload
             // ... Hint:
             //     - Check for common operations on the methods below to possible isolation in
             //       standalone, generic and reusable methods
+            return 0;
         }
 
-        public static void ShowInfo() {
-            // Show information about the application, including the -h parameter for a full help
-            Console.WriteLine("Error 404, Parameters Not Found");
-            Console.WriteLine("Type 'help' for more information");
-        }
-
-        public static void ShowHelp() {
+        public static void ShowHelp(OptionSet p) {
             // This should print a full help, with all the supported parameters
-            Console.WriteLine("\nParameters Accepted:\n\nFor user token, use xoxp-\n\nFor bot user token, use xoxb-\n\nFor workspace token, use xoxa- ");
+            Console.WriteLine("Usage: SlackDownload [OPTIONS]+");
+            Console.WriteLine("Tries to connect to given slack channel and download selected files");
+            Console.WriteLine();
+            Console.WriteLine("Valid options:");
+            p.WriteOptionDescriptions(Console.Out);
         }
         
         public static async void SlackAuthenticate() {
