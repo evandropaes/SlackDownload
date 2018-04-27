@@ -34,9 +34,8 @@ namespace SlackDownload
                 { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
                 { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
             };
-            List<string> extraParms;
             try {
-                extraParms = p.Parse(args);
+                List<string> extraParms = p.Parse(args);
             }
             catch (OptionException failure) {
                 Console.Write("SlackDownload: ");
@@ -97,7 +96,7 @@ namespace SlackDownload
             Console.WriteLine("Valid options:");
             p.WriteOptionDescriptions(Console.Out);
         }
-        
+
         public static async void SlackAuthenticate() {
             // Prepare the client HTTP request
             // Perform the call to the final URI entry point to validate your tokens
