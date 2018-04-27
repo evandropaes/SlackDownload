@@ -128,3 +128,7 @@ namespace SlackDownload
         }
     }
 }
+
+
+// var slack_client_id = "345057989283.352648811969";
+// var slack_client_secret = "bdfa71c098b41c9f26fc5ea0eb700af2"
