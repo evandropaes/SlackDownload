@@ -16,6 +16,9 @@ namespace SlackDownload
     class Program {
 
         private static string SourceFolder = @"C:\Windows\Temp";
+        private static string DestinationFolder = @"C:\SlackArchives";
+
+       
 
         public static int Main(string[] args) {
             // Set some variables to default values
@@ -99,6 +102,7 @@ namespace SlackDownload
         }
         
         public static async void SlackAuthenticate() {
+            
             // Prepare the client HTTP request
             // Perform the call to the final URI entry point to validate your tokens
             // Serialize the JSON returned
@@ -122,9 +126,20 @@ namespace SlackDownload
             // Serialize the JSON returned
             // Accept the file and save it to local "temp"
         }
-
+        public static void CreateFolder()
+        {
+            if (!Directory.Exists(DestinationFolder))
+            {
+                System.IO.Directory.CreateDirectory(DestinationFolder);
+            }
+            
+        }
         public static void CopyingArchives() {
+
             // Move the downloaded files to the final destination
         }
     }
 }
+
+//var slack_client_id = "345057989283.352648811969";
+//var slack_client_secret = "bdfa71c098b41c9f26fc5ea0eb700af2"
