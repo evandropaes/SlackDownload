@@ -34,9 +34,9 @@ namespace SlackDownload
                 { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
                 { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
             };
-            List<string> parsedValues;
+            List<string> extraParms;
             try {
-                parsedValues = p.Parse(args);
+                extraParms = p.Parse(args);
             }
             catch (OptionException failure) {
                 Console.Write("SlackDownload: ");
