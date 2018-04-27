@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using System.Net;

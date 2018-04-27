@@ -28,11 +28,11 @@ namespace SlackDownload
 
             var p = new OptionSet() {
                 { "h|help", "Show this message and exit.", v => show_help = (v != null) },
-                { "r|remote", "Inform the Slack instance name to connect.", v => instance_name = v },
-                { "u|user", "Inform the Slack user to authenticate.", v => user_name = v },
-                { "p|password", "Inform the Slack user password to authenticate.", v => password = v},
-                { "c|channel", "Inform the Slack channel to connect to.", v => channel_name = v },
-                { "t|filetype", "Inform the extensions to download.", v => file_types.Add(v) }
+                { "r|remote=", "Inform the Slack instance name to connect.", v => instance_name = v },
+                { "u|user=", "Inform the Slack user to authenticate.", v => user_name = v },
+                { "p|password=", "Inform the Slack user password to authenticate.", v => password = v},
+                { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
+                { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
             };
             List<string> parsedValues;
             try {
@@ -46,8 +46,8 @@ namespace SlackDownload
             }
 
             // Check for required parameters
-            if (! show_help && (instance_name.Length == 0 || user_name.Length == 0 ||
-                                password.Length == 0 || channel_name.Length == 0)) {
+            if (!show_help && (instance_name.Length == 0 || user_name.Length == 0 ||
+                               password.Length == 0 || channel_name.Length == 0)) {
                 Console.Write("SlackDownload: ");
                 Console.WriteLine("Missing required parameters!");
                 Console.WriteLine("Try 'SlackDownload --help' for more information.");
@@ -76,6 +76,16 @@ namespace SlackDownload
             // ... Hint:
             //     - Check for common operations on the methods below to possible isolation in
             //       standalone, generic and reusable methods
+
+            // As a debug mesure, tries to print all received parameters
+            Console.Write("Instance name: ");
+            Console.WriteLine(instance_name);
+            Console.Write("User name: ");
+            Console.WriteLine(user_name);
+            Console.Write("User password: ");
+            Console.WriteLine(password);
+            Console.Write("Channel name: ");
+            Console.WriteLine(channel_name);
             return 0;
         }
 
