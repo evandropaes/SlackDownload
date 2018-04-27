@@ -30,7 +30,7 @@ namespace SlackDownload
                 { "h|help", "Show this message and exit.", v => show_help = (v != null) },
                 { "r|remote=", "Inform the Slack instance name to connect.", v => instance_name = v },
                 { "u|user=", "Inform the Slack user to authenticate.", v => user_name = v },
-                { "p|password=", "Inform the Slack user password to authenticate.", v => password = v},
+                { "p|password=", "Inform the Slack user password to authenticate.", v => password = v },
                 { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
                 { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
             };
