@@ -24,14 +24,12 @@ namespace SlackDownload
         public static int Main(string[] args) {
             
             bool show_help = false;
-            string instance_name = "";
             string token = "";
             string channel_name = "";
             List<string> file_types = new List<string>();
 
             var p = new OptionSet() {
                 { "h|help", "Show this message and exit.", v => show_help = (v != null) },
-                { "r|remote=", "Inform the Slack instance name to connect.", v => instance_name = v },
                 { "i|id=", "Inform the Slack user token to authenticate.", v => token = v },
                 { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
                 { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
@@ -48,7 +46,7 @@ namespace SlackDownload
             }
 
             // Check for required parameters
-            if (!show_help && (instance_name.Length == 0 || token.Length == 0 ||
+            if (!show_help && (token.Length == 0 ||
                                channel_name.Length == 0)) {
                 Console.Write("SlackDownload: ");
                 Console.WriteLine("Missing required parameters!");
@@ -62,8 +60,6 @@ namespace SlackDownload
                 return 0;
             }
                       
-            Console.Write("Instance name: ");
-            Console.WriteLine(instance_name);
             Console.Write("User token: ");
             Console.WriteLine(token);
             Console.Write("Channel name: ");
@@ -107,8 +103,8 @@ namespace SlackDownload
                 new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
 
-            var stringTask = client.GetStringAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel);
-            var streamTask = client.GetStreamAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel);
+            var stringTask = client.GetStringAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel + "&pretty=1");
+            var streamTask = client.GetStreamAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel + "&pretty=1");
             var files = serializer.ReadObject(await streamTask) as List<Files>;
             Console.Write(files);
             return files;

@@ -6,7 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ListExtensions" Version="1.0.1" />
     <PackageReference Include="Mono.Options" Version="5.3.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
   </ItemGroup>
 
 </Project>

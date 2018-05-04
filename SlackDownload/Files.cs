@@ -4,29 +4,23 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 using System.Globalization;
+using Newtonsoft.Json;
 
 //id, name, filetype and url_private_download
 namespace SlackDownload
 {
-    [DataContract(Name = "files")]
     public class Files
     {
-        [DataMember(Name = "id")]
-        public string Id
-        {
-            get { return this._id; }
-            set { this._id = value; }
-        }
-        private string _id;
+        [JsonProperty("id")]
+        public string Id { get; set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string FileName { get; set; }
 
-        [DataMember(Name = "filetype")]
-        public string Filetype { get; set; }
+        [JsonProperty("filetype")]
+        public int Filetype { get; set; }
 
-        [DataMember(Name = "url_private_download")]
+        [JsonProperty("url_private_download")]
         public string Url { get; set; }
-        
     }
 }
