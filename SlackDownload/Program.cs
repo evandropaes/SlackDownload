@@ -15,25 +15,24 @@ namespace SlackDownload
 {
     class Program {
 
-        private static string SourceFolder = @"C:\Windows\Temp";
-        private static string DestinationFolder = @"C:\SlackArchives";
+        
 
-       
+        private static string DestinationFolder = @"C:\SlackArchives";
+        private static readonly HttpClient client = new HttpClient();
+
 
         public static int Main(string[] args) {
-            // Set some variables to default values
+            
             bool show_help = false;
             string instance_name = "";
-            string user_name = "";
-            string password = "";
+            string token = "";
             string channel_name = "";
             List<string> file_types = new List<string>();
 
             var p = new OptionSet() {
                 { "h|help", "Show this message and exit.", v => show_help = (v != null) },
                 { "r|remote=", "Inform the Slack instance name to connect.", v => instance_name = v },
-                { "u|user=", "Inform the Slack user to authenticate.", v => user_name = v },
-                { "p|password=", "Inform the Slack user password to authenticate.", v => password = v},
+                { "i|id=", "Inform the Slack user token to authenticate.", v => token = v },
                 { "c|channel=", "Inform the Slack channel to connect to.", v => channel_name = v },
                 { "t|filetype=", "Inform the extensions to download.", v => file_types.Add(v) }
             };
@@ -49,8 +48,8 @@ namespace SlackDownload
             }
 
             // Check for required parameters
-            if (!show_help && (instance_name.Length == 0 || user_name.Length == 0 ||
-                               password.Length == 0 || channel_name.Length == 0)) {
+            if (!show_help && (instance_name.Length == 0 || token.Length == 0 ||
+                               channel_name.Length == 0)) {
                 Console.Write("SlackDownload: ");
                 Console.WriteLine("Missing required parameters!");
                 Console.WriteLine("Try 'SlackDownload --help' for more information.");
@@ -62,34 +61,32 @@ namespace SlackDownload
                 ShowHelp(p);
                 return 0;
             }
-
-
-            // If parameters were given, test them and collect its information
-            // ... Perform the test of for -h and then call the method ShowHelp()
-            // ... Other parameters could be added / tested later... ;-)
-
-            // As the default
-
-            // Execute the authentication (SlackAuthenticate)
-            // Indicate the slack channel to access (ChooseChannel)
-            // Collect the files to download (GetChannelFiles)
-            // Effectively download the files to local "temp" (DownloadArchives)
-            // Move files from local "temp" to final destination (CopyingArchives)
-            // ... Don't forget to check exceptions on external / critical sections...
-            // ... Hint:
-            //     - Check for common operations on the methods below to possible isolation in
-            //       standalone, generic and reusable methods
-
-            // As a debug mesure, tries to print all received parameters
+                      
             Console.Write("Instance name: ");
             Console.WriteLine(instance_name);
-            Console.Write("User name: ");
-            Console.WriteLine(user_name);
-            Console.Write("User password: ");
-            Console.WriteLine(password);
+            Console.Write("User token: ");
+            Console.WriteLine(token);
             Console.Write("Channel name: ");
             Console.WriteLine(channel_name);
+            Console.Write("File Types: ");
+            foreach(var type in file_types)
+            {
+                Console.WriteLine(type);
+            }
+            var files = GetChannelFiles(token, channel_name).Result;
+
+            foreach (var file in files)
+            {
+                Console.WriteLine(file.Id);
+                Console.WriteLine(file.FileName);
+                Console.WriteLine(file.Filetype);
+                Console.WriteLine(file.Url);         
+                Console.WriteLine();
+            }
+        
+
             return 0;
+
         }
 
         public static void ShowHelp(OptionSet p) {
@@ -100,24 +97,21 @@ namespace SlackDownload
             Console.WriteLine("Valid options:");
             p.WriteOptionDescriptions(Console.Out);
         }
-        
-        public static async void SlackAuthenticate() {
-            
-            // Prepare the client HTTP request
-            // Perform the call to the final URI entry point to validate your tokens
-            // Serialize the JSON returned
-        }
 
-        public static async void ChooseChannel() {
-            // Prepare the client HTTP request
-            // Perform the call to the final URI entry point to get channel ID
-            // Serialize the JSON returned
-        }
+        private static async Task<List<Files>> GetChannelFiles(string token, string channel)
+        {
+            var serializer = new DataContractJsonSerializer(typeof(List<Files>));
 
-        public static async void GetChannelFiles() {
-            // Prepare the client HTTP request
-            // Perform the call to the final URI entry point to get available files
-            // Serialize the JSON returned
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            client.DefaultRequestHeaders.Add("User-Agent", ".NET Foundation Repository Reporter");
+
+            var stringTask = client.GetStringAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel);
+            var streamTask = client.GetStreamAsync("https://slack.com/api/files.list" +  "?token=" + token + "&channel=" + channel);
+            var files = serializer.ReadObject(await streamTask) as List<Files>;
+            Console.Write(files);
+            return files;
         }
 
         public static async void DownloadArchives() {
@@ -140,6 +134,7 @@ namespace SlackDownload
         }
     }
 }
-
+//string token = "xoxp-345057989283-346045397718-359698302215-7287ca3e557ed8aa505181a497f2882c";
+//string channel = "CA61C9H7Y";
 //var slack_client_id = "345057989283.352648811969";
 //var slack_client_secret = "bdfa71c098b41c9f26fc5ea0eb700af2"
